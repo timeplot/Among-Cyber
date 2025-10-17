@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor - Defence vs Infection</title>
+<link rel="stylesheet" href="imposter.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>😈 Impostor: Sabotage the Firewall</h1>
+    <p>Launch attacks or inject fake code blocks to disrupt the Crewmates!</p>
+
+    <p class="timer">🕐 Time left: <span id="timer">120</span> seconds</p>
+
+    <div class="attack-panel">
+      <input id="malwareText" placeholder="Type malware line to inject...">
+      <button id="injectBtn">💀 Inject Malware Block</button>
+      <button id="disableBtn">🚫 Lock Firewall</button>
+    </div>
+
+    <div id="log"></div>
+  </div>
+
+<script src="imposter.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabotage Control</title>
+<style>
+* {box-sizing: border-box;margin:0;padding:0;}
+body {font-family: monospace;color: red;background-color: black;padding: 20px;line-height:1.6;display: flex;justify-content: center;align-items: center;min-height: 100vh;}
+.container {max-width: 600px;margin:0 auto;background-color:black;border-radius:8px;overflow:hidden;border: 2px solid red;padding: 30px;text-align: center;}
+header {background: linear-gradient(to right,darkred, red);color:white;padding:24px 30px;border-bottom:1px solid black;margin: -30px -30px 30px -30px;}
+h1 {font-size:26px;margin-bottom:8px;display:flex;align-items:center;justify-content: center;}
+h1 i {margin-right:12px;font-size:28px;}
+.subtitle {font-size:15px;opacity:0.85;margin-bottom:12px;}
+button {padding:12px 24px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.3s ease;font-size:16px;margin: 20px 0;}
+#sabotageBtn {background-color:red;color:white;font-size: 20px;padding: 15px 30px;}
+#sabotageBtn:hover {background-color:darkred;transform: scale(1.05);}
+.warning {color: red; font-weight: bold; margin: 20px 0; padding: 15px; background-color: rgba(255, 0, 0, 0.1); border: 1px solid red; border-radius: 5px;}
+.footer {padding:18px 30px;background: linear-gradient(to right,darkred, red);border-top:1px solid gray;text-align:center;color:black;font-size:14px;margin: 30px -30px -30px -30px;}
+.status {margin: 15px 0; padding: 10px; border-radius: 5px;}
+.status.active {background-color: rgba(0, 255, 0, 0.1); border: 1px solid crimson; color: crimson;}
+.status.inactive {background-color: rgba(255, 0, 0, 0.1); border: 1px solid red; color: red;}
+.instructions {margin: 20px 0; text-align: left;}
+.instructions ol {margin: 10px 0; padding-left: 20px;}
+.instructions li {margin: 5px 0;}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1><i></i> Sabotage Control Panel</h1>
+<div class="subtitle">Warning: This will disrupt the network security log analysis</div>
+</header>
+
+<div class="warning">
+ WARNING: Clicking this button will shuffle the network log entries, making it harder to identify suspicious activities!
+</div>
+
+<div class="status inactive" id="status">Status: Network Security Log not detected</div>
+
+<button id="sabotageBtn">SABOTAGE NETWORK LOG</button>
+<div class="footer">Network Security Training - Sabotage Control</div>
+</div>
+
+<script>
+const sabotageBtn = document.getElementById('sabotageBtn');
+const status = document.getElementById('status');
+
+// Check if main page is open
+function checkMainPage() {
+  const mainPageOpen = localStorage.getItem('mainPageOpen');
+  if (mainPageOpen === 'true') {
+    status.textContent = 'Status: Network Security Log detected - Ready!';
+    status.className = 'status active';
+    return true;
+  } else {
+    status.textContent = 'Status: Network Security Log not detected';
+    status.className = 'status inactive';
+    return false;
+  }
+}
+
+sabotageBtn.addEventListener('click', function() {
+  if (!checkMainPage()) {
+    alert('Please open the Network Security Log page (main.html) in another tab first!');
+    return;
+  }
+  
+  // Set a flag in localStorage to trigger sabotage in the main page
+  localStorage.setItem('sabotage', 'true');
+  
+  // Visual feedback
+  sabotageBtn.textContent = 'SABOTAGE ACTIVATED!';
+  sabotageBtn.style.backgroundColor = 'darkred';
+  sabotageBtn.disabled = true;
+  status.textContent = 'Status: Sabotage signal sent! Check main page.';
+  status.className = 'status active';
+  
+  console.log('Sabotage triggered - localStorage set to true');
+  
+  // Reset button after 3 seconds
+  setTimeout(() => {
+    sabotageBtn.textContent = 'SABOTAGE NETWORK LOG';
+    sabotageBtn.style.backgroundColor = 'red';
+    sabotageBtn.disabled = false;
+    checkMainPage();
+  }, 3000);
+});
+
+// Check if main page is open periodically
+setInterval(checkMainPage, 1000);
+checkMainPage();
+</script>
+</body>
+</html>

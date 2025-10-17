@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Impostor - Hacker UI</title>
+<style>
+  :root{ --accent:#00ff72; --danger:#ff4f5a; --bg:#010101; }
+  html,body{height:100%;margin:0;font-family: "Roboto Mono", monospace;background: linear-gradient(180deg,#000 0%, #020202 100%); color:var(--accent);}
+  .wrap{height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .panel{ width:600px; max-width:95%; background:rgba(0,0,0,0.72); border:1px solid rgba(0,255,130,0.08); box-shadow:0 10px 40px rgba(0,0,0,0.7); border-radius:12px; padding:20px; }
+  .title{ display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; }
+  .title h1{font-size:18px;margin:0;color:var(--accent); }
+  .terminal{ background:linear-gradient(180deg, rgba(2,6,2,0.35), rgba(0,0,0,0.2)); border-radius:6px; padding:10px; height:120px; overflow:auto; color:var(--accent); font-size:12px; line-height:1.3; white-space:pre-wrap; }
+  .controls{ display:flex; justify-content:space-between; gap:10px; margin-top:15px; align-items:center; }
+  .timer{ font-weight:700; font-size:20px; color:var(--accent); background:rgba(0,0,0,0.25); padding:4px 10px; border-radius:6px; border:1px solid rgba(0,255,130,0.03); }
+  button{ padding:8px 16px; border-radius:6px; border:0; cursor:pointer; font-weight:700; font-size:12px; }
+  #sabotageBtn{ background: var(--danger); color:white; }
+  #nextBtn{ background: #00c77a; color:#001; display:none; }
+  #submitTaskBtn { background: #ffa500; color:#000; }
+  .meta{ margin-top:8px; color:#88ffcc; font-size:11px; }
+  
+  /* Task styles */
+  .task-container { margin-top: 12px; border: 1px solid rgba(0,255,130,0.2); border-radius: 6px; padding: 10px; }
+  .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .task-title { font-weight: bold; color: var(--accent); font-size: 12px; }
+  .task-step { margin-bottom: 10px; padding: 8px; border: 1px solid rgba(0,255,130,0.1); border-radius: 4px; }
+  .step-question { font-weight: bold; margin-bottom: 6px; color: #9fffbf; font-size: 11px; }
+  .step-options { display: flex; flex-direction: column; gap: 4px; }
+  .option { padding: 6px; border: 1px solid rgba(0,255,130,0.2); border-radius: 3px; cursor: pointer; font-size: 10px; transition: all 0.2s; }
+  .option:hover { background: rgba(0,255,130,0.1); }
+  .option.selected { background: rgba(0,255,130,0.2); border-color: #00ff72; }
+  .option.correct { background: rgba(0,255,0,0.2); border-color: #00ff00; }
+  .option.incorrect { background: rgba(255,0,0,0.2); border-color: #ff0000; }
+  .task-complete { color: #00ff72; font-weight: bold; margin-top: 8px; text-align: center; font-size: 11px; }
+  .access-denied { color: var(--danger); font-weight: bold; margin-top: 8px; text-align: center; font-size: 11px; display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <div class="title">
+      <h1>IMPOSTOR CONTROL</h1>
+      <div class="meta">Sabotage: ∞ Uses</div>
+    </div>
+
+    <div class="terminal" id="terminal">
+[init] Panel active - 05:00
+[task] Complete malware injection
+    </div>
+
+    <!-- Malware Task -->
+    <div class="task-container">
+      <div class="task-header">
+        <div class="task-title">MALWARE INJECTION</div>
+      </div>
+      
+      <div class="task-step">
+        <div class="step-question">1. Transfer malware to server:</div>
+        <div class="step-options">
+          <div class="option" data-step="1" data-value="scp malware.sh admin@server:/tmp/">scp malware.sh admin@server:/tmp/</div>
+          <div class="option" data-step="1" data-value="download malware.sh">ssh admin@victim-pc /tmp/encryptor.exe --all-drive</div>
+        </div>
+      </div>
+      
+      <div class="task-step">
+        <div class="step-question">2. Make it executable:</div>
+        <div class="step-options">
+          <div class="option" data-step="2" data-value="ssh admin@server chmod +x /tmp/malware.sh">ssh admin@server chmod +x /tmp/malware.sh</div>
+          <div class="option" data-step="2" data-value="make executable">ssh miner@server /opt/xmrig --url=pool.com --user=wallet --pass=x</div>
+        </div>
+      </div>
+      
+      <div class="task-step">
+        <div class="step-question">3. Set auto-run every 5min:</div>
+        <div class="step-options">
+          <div class="option" data-step="3" data-value="ssh admin@server echo '*/5 * * * * /tmp/malware.sh' | crontab -">ssh admin@server echo '*/5 * * * * /tmp/malware.sh' | crontab -</div>
+          <div class="option" data-step="3" data-value="set timer">ssh admin@pc wevtutil cl security</div>
+        </div>
+      </div>
+      
+      <div class="task-step">
+        <div class="step-question">4. Run malware now:</div>
+        <div class="step-options">
+          <div class="option" data-step="4" data-value="ssh admin@server /tmp/malware.sh --silent">ssh admin@server /tmp/malware.sh --silent</div>
+          <div class="option" data-step="4" data-value="run now">ssh admin@router echo "nameserver 127.0.0.1" > /etc/resolv.conf</div>
+        </div>
+      </div>
+      
+      <div class="task-step">
+        <div class="step-question">5. Delete evidence:</div>
+        <div class="step-options">
+          <div class="option" data-step="5" data-value="ssh admin@server rm -f /var/log/auth.log">ssh admin@server rm -f /var/log/auth.log</div>
+          <div class="option" data-step="5" data-value="clear logs">scp log3.dll admin@pc:c:/windows/system32/</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 10px;">
+        <button id="submitTaskBtn">SUBMIT TASK</button>
+      </div>
+      <div class="task-complete" id="taskComplete" style="display: none;">✓ Task Complete! Next level unlocked.</div>
+      <div class="access-denied" id="accessDenied">Fix errors to proceed</div>
+    </div>
+
+    <div class="controls">
+      <div class="timer" id="timer">05:00</div>
+      <div>
+        <button id="sabotageBtn">SABOTAGE</button>
+        <button id="nextBtn">NEXT LEVEL</button>
+      </div>
+    </div>
+
+    <div class="meta" id="cooldownInfo">Use Wisely</div>
+  </div>
+</div>
+
+<script>
+  const terminal = document.getElementById('terminal');
+  const timerEl = document.getElementById('timer');
+  const sabotageBtn = document.getElementById('sabotageBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitTaskBtn = document.getElementById('submitTaskBtn');
+  const cooldownInfo = document.getElementById('cooldownInfo');
+  const taskComplete = document.getElementById('taskComplete');
+  const accessDenied = document.getElementById('accessDenied');
+
+  // CONFIG - INFINITE USES
+  const cooldownMs = 120000; // 3 seconds cooldown only
+  const panelDurationMs = 5 * 60 * 1000;
+
+  // Initialize state - NO USE LIMITS
+  let nextAvailable = Number(localStorage.getItem('sabotageNextAvailable'));
+  if (isNaN(nextAvailable) || nextAvailable < 0) nextAvailable = 0;
+
+  const panelEndAt = Date.now() + panelDurationMs;
+  let userSelections = JSON.parse(localStorage.getItem('userSelections') || '{}');
+  let taskFinished = localStorage.getItem('taskFinished') === 'true';
+
+  // Correct answers
+  const correctAnswers = {
+    1: "scp malware.sh admin@server:/tmp/",
+    2: "ssh admin@server chmod +x /tmp/malware.sh", 
+    3: "ssh admin@server echo '*/5 * * * * /tmp/malware.sh' | crontab -",
+    4: "ssh admin@server /tmp/malware.sh --silent",
+    5: "ssh admin@server rm -f /var/log/auth.log"
+  };
+
+  function appendLine(text) {
+    terminal.innerText += `\n${text}`;
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  function formatTimeLeft(ms){
+    const s = Math.max(0, Math.ceil(ms / 1000));
+    return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
+  }
+
+  function updateUI(){
+    const now = Date.now();
+    
+    // Cooldown check only - NO USE LIMITS
+    if(now < nextAvailable){
+      sabotageBtn.disabled = true;
+      cooldownInfo.textContent = `Cooldown: ${formatTimeLeft(nextAvailable - now)}`;
+    } else {
+      sabotageBtn.disabled = false; // Always enabled when not on cooldown
+      cooldownInfo.textContent = 'Use wisely';
+    }
+    
+    // Panel timer
+    const untilEnd = panelEndAt - now;
+    if(untilEnd <= 0) {
+      appendLine('[time] Panel expired');
+      return;
+    }
+    timerEl.textContent = formatTimeLeft(untilEnd);
+  }
+
+  // Initialize options
+  function initializeOptions() {
+    document.querySelectorAll('.option').forEach(option => {
+      const step = option.dataset.step;
+      if (userSelections[step] === option.dataset.value) {
+        option.classList.add('selected');
+      }
+      
+      option.addEventListener('click', function() {
+        document.querySelectorAll(`.option[data-step="${step}"]`).forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        userSelections[step] = this.dataset.value;
+        localStorage.setItem('userSelections', JSON.stringify(userSelections));
+      });
+    });
+  }
+
+  // Submit task
+  submitTaskBtn.addEventListener('click', function() {
+    let allCorrect = true;
+    
+    for (let step = 1; step <= 5; step++) {
+      const userAnswer = userSelections[step];
+      const correctAnswer = correctAnswers[step];
+      const stepOptions = document.querySelectorAll(`.option[data-step="${step}"]`);
+      
+      stepOptions.forEach(opt => {
+        opt.classList.remove('correct', 'incorrect');
+        if (opt.dataset.value === correctAnswer) {
+          opt.classList.add('correct');
+        }
+        if (opt.dataset.value === userAnswer && userAnswer !== correctAnswer) {
+          opt.classList.add('incorrect');
+          allCorrect = false;
+        }
+      });
+    }
+    
+    if (allCorrect) {
+      taskComplete.style.display = 'block';
+      accessDenied.style.display = 'none';
+      appendLine('[success] Task complete! Next level unlocked.');
+      nextBtn.style.display = 'inline-block';
+      taskFinished = true;
+      localStorage.setItem('taskFinished', 'true');
+    } else {
+      accessDenied.style.display = 'block';
+      appendLine('[error] Fix incorrect commands');
+    }
+  });
+
+  // SABOTAGE BUTTON - INFINITE USES!
+  sabotageBtn.addEventListener('click', function() {
+    const now = Date.now();
+    
+    if(now < nextAvailable) {
+      appendLine('[wait] Cooldown active');
+      return;
+    }
+
+    // TRIGGER SABOTAGE - INFINITE USES!
+    localStorage.setItem('sabotageTrigger', Date.now().toString());
+    appendLine('[sabotage] Triggered! Main page will shuffle.');
+    
+    // Only set cooldown, no use decrement
+    nextAvailable = now + cooldownMs;
+    localStorage.setItem('sabotageNextAvailable', String(nextAvailable));
+    updateUI();
+  });
+
+  // Next level
+  nextBtn.addEventListener('click', function() {
+    if (taskFinished) {
+      appendLine('[system] Moving to next level...');
+      localStorage.removeItem('userSelections');
+      localStorage.removeItem('taskFinished');
+      location.href ='Impostor 2.5.html'
+      // window.location.href = 'next-page.html'; // Uncomment when ready
+    }
+  });
+
+  // Initialize
+  updateUI();
+  initializeOptions();
+  setInterval(updateUI, 1000);
+
+  // Load previous log
+  const prev = localStorage.getItem('impostorLog');
+  if(prev) terminal.innerText = prev + terminal.innerText;
+  setInterval(() => localStorage.setItem('impostorLog', terminal.innerText), 3000);
+</script>
+</body>
+</html>
